@@ -6,6 +6,7 @@ public class Node : MonoBehaviour {
     //public Node[] neaby_node = new Node[6];
     public float offset;
     public Slot[] slots;
+    public Slot anchorSlot;
 
 	// Use this for initialization
 	void Start () {
