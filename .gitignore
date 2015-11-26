@@ -1,6 +1,8 @@
 Library/
+Temp/
 obj/
 Assets/Unpack/
 *.sln
 *.userprefs
 *.csproj
+/*.suo
