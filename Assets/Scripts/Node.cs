@@ -24,13 +24,14 @@ public class Node : MonoBehaviour {
         Gizmos.DrawSphere(this.transform.position, 0.25f);
     }
 
-    public virtual Slot getNearestSlot(Vector3 point) {
-        
-        Slot retSlot = slots[0];
-        float minDist = Vector3.Distance(point, retSlot.transform.position);
-        for (int i = 1; i < slots.Length; ++i )
-        {
-            var slot = slots[i];
+    public virtual Slot getNearestSlot(Vector3 point) 
+	{
+		Slot retSlot = null;
+		float minDist = float.MaxValue;
+		foreach (var slot in slots) 
+		{
+			if (slot.otherNode != null)
+				continue;
             float dist = Vector3.Distance(point, slot.transform.position);
             if (minDist >= dist)
             {

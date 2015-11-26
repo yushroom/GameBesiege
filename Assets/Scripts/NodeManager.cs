@@ -33,6 +33,8 @@ public class NodeManager : MonoBehaviour {
             }
 
             Slot slot = node.getNearestSlot(hit.point);
+			if (slot == null)
+				return;
             Vector3 slotMainDirection = go.transform.rotation * _direction[(int)slot.direction];
             one_node.transform.position = slot.transform.position + slotMainDirection.normalized * one_node.offset;
             one_node.transform.rotation = Quaternion.FromToRotation(one_node.anchorSlot.transform.localPosition,
@@ -78,7 +80,7 @@ public class NodeManager : MonoBehaviour {
 
     public void changeComponentIndex(int index) {
         if (index < 0) index = 0;
-        if (index > 1) index = 1;
+        if (index > 2) index = 2;
         this.component_index = index;
     }
 }
