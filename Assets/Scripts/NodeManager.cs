@@ -4,6 +4,7 @@ using System.Collections;
 public class NodeManager : MonoBehaviour {
 
     public bool build_mode = true;
+    public Node root;
     public Node[] one_nodes;
     public Node[] prefabs;
     public Node[] nodes;
@@ -56,6 +57,8 @@ public class NodeManager : MonoBehaviour {
                 slot.otherNode = new_node;
                 one_node.gameObject.SetActive(false);
                 one_node.transform.rotation = Quaternion.identity;
+                new_node.transform.parent = root.transform;
+                root.combineBound(new_node);
             }
         }
 	}
