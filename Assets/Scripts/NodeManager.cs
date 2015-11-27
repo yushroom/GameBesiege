@@ -5,6 +5,7 @@ public class NodeManager : MonoBehaviour {
 
     public bool build_mode = true;
     public Node root;
+	public Bounds bigCubeBounds;
     public Node[] one_nodes;
     public Node[] prefabs;
     public Node[] nodes;
@@ -26,6 +27,7 @@ public class NodeManager : MonoBehaviour {
             GameObject go = hit.transform.gameObject;
             Node node = go.GetComponent<Node>();
             var one_node = one_nodes[component_index];
+			one_node.gameObject.SetActive(false);
             if (node == null || go.tag == "OneNode")
             {
                 //Debug.Log("not a node");
@@ -37,27 +39,30 @@ public class NodeManager : MonoBehaviour {
 			if (slot == null)
 				return;
             Vector3 slotMainDirection = go.transform.rotation * _direction[(int)slot.direction];
+
             one_node.transform.position = slot.transform.position + slotMainDirection.normalized * one_node.offset;
             one_node.transform.rotation = Quaternion.FromToRotation(one_node.anchorSlot.transform.localPosition,
                                                                     slot.transform.position - one_node.transform.position);
-            one_node.gameObject.SetActive(true);
+			Bounds expectedBound = one_node.boundInWorldSpace;
+			//Debug.Log("min " + expectedBound.min);
+			//Debug.Log("max " + expectedBound.max);
+			if (!(bigCubeBounds.Contains(expectedBound.min) && bigCubeBounds.Contains(expectedBound.max))) {
+				return;
+			}
+			one_node.gameObject.SetActive(true);
 
             if (Input.GetMouseButtonDown(0))
             {
                 one_node.gameObject.SetActive(false);
                 Node new_node = Instantiate(prefabs[component_index]) as Node;
                 new_node.transform.position = one_node.transform.position;
-                //new_node.transform.rotation = Quaternion.FromToRotation(new_node.anchorSlot.transform.position - new_node.transform.position, 
-                //                                                        slot.transform.position - new_node.transform.position);
                 new_node.transform.rotation = one_node.transform.rotation;
-                //int oppositeDirection = (int)slot.direction + ((int)slot.direction % 2 + 1) % 2;
-                //new_node.slots[oppositeDirection].otherNode = node;
                 new_node.anchorSlot.otherNode = node;
-                //node.slots[(int)slot.direction].otherNode = new_node;
                 slot.otherNode = new_node;
                 one_node.gameObject.SetActive(false);
                 one_node.transform.rotation = Quaternion.identity;
                 new_node.transform.parent = root.transform;
+				new_node.boundInWorldSpace = expectedBound;
                 root.combineBound(new_node);
             }
         }

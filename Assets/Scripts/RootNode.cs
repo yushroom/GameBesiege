@@ -15,6 +15,17 @@ public class RootNode : Node {
 	
 	}
 
+	void OnDrawGizmos()
+	{
+		// draw node center
+		Gizmos.color = Color.green;
+		Gizmos.DrawSphere(this.transform.position, 0.25f);
+		
+		// draw bounding box
+		Gizmos.color = Color.yellow;
+		Gizmos.DrawWireCube (bound.center + transform.position, bound.size);
+	}
+
     public void toBottom()
     {
         const float offset = 0.1f;
