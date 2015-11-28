@@ -3,6 +3,8 @@ using System.Collections;
 
 [RequireComponent(typeof(WheelController))]
 public class WheelNode : Node {
+
+    [HideInInspector]
 	public bool clockWise = true;
 
 	public override void initialize() {

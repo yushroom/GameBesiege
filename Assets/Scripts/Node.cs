@@ -29,10 +29,10 @@ public class Node : MonoBehaviour
 	Bounds _boundInWorldSpace;
 	public Bounds boundInWorldSpace {
 		get {
-			if (!_hasboundInWorldSpace) {
+			//if (!_hasboundInWorldSpace) {
 				this.getTransformedBoundInLocalSpace();
-				_hasboundInWorldSpace = true;
-			}
+			//	_hasboundInWorldSpace = true;
+			//}
 			return _boundInWorldSpace;
 		}
 		set {
@@ -44,7 +44,7 @@ public class Node : MonoBehaviour
     public Slot anchorSlot;
 
 	Rigidbody _rigidbody = null;
-	public Rigidbody rigidbody {
+	public new Rigidbody rigidbody {
 		get {
 			if (_rigidbody == null)
 				_rigidbody = GetComponent<Rigidbody>();

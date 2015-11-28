@@ -15,11 +15,11 @@ public class FreeCamera : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        this.transform.LookAt(target);
-	}
-	
-	// Update is called once per frame
-	void Update () {
+        transform.LookAt(target);
+    }
+
+    // Update is called once per frame
+    void Update () {
 
         //if (Input.GetKeyDown(KeyCode.LeftAlt))
         if (Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.LeftAlt))

@@ -13,18 +13,20 @@ public class NodeManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-	
+        Time.timeScale = 0;
 	}
 
-	public void startGame() {
+	public void startGame()
+    {
+        Time.timeScale = 1;
 		build_mode = false;
-		var nodes = GetComponentsInChildren<Node> ();
-		foreach (Node node in nodes) {
-			Rigidbody rg = node.GetComponent<Rigidbody>();
-			if (rg != null) {
-				rg.useGravity = true;
-			}
-		}
+		//var nodes = GetComponentsInChildren<Node> ();
+		//foreach (Node node in nodes) {
+		//	Rigidbody rg = node.GetComponent<Rigidbody>();
+		//	if (rg != null) {
+		//		rg.useGravity = true;
+		//	}
+		//}
 	}
 
     static Vector3[] _direction = { new Vector3(1, 0, 0), new Vector3(-1, 0, 0), new Vector3(0, 1, 0), 
@@ -91,25 +93,8 @@ public class NodeManager : MonoBehaviour {
 		}
 	}
 
-//	void makeOneNodeVisiableFromHitPosition(Vector3 hitPosition) {
-//		Slot slot = node.getNearestSlot(hit.point);
-//		if (slot == null)
-//			return;
-//		Vector3 slotMainDirection = go.transform.rotation * _direction[(int)slot.direction];
-//		
-//		one_node.transform.position = slot.transform.position + slotMainDirection.normalized * one_node.offset;
-//		one_node.transform.rotation = Quaternion.FromToRotation(one_node.anchorSlot.transform.localPosition,
-//		                                                        slot.transform.position - one_node.transform.position);
-//		Bounds expectedBound = one_node.boundInWorldSpace;
-//		//Debug.Log("min " + expectedBound.min);
-//		//Debug.Log("max " + expectedBound.max);
-//		if (!(bigCubeBounds.Contains(expectedBound.min) && bigCubeBounds.Contains(expectedBound.max))) {
-//			return;
-//		}
-//		one_node.gameObject.SetActive(true);
-//	}
-
-    Vector3 mainDirection(Vector3 dir) {
+    Vector3 mainDirection(Vector3 dir)
+    {
         Vector3 position_offset = Vector3.zero;
         //Debug.Log(dir);
         Vector3 abs_dir = dir;
@@ -127,7 +112,8 @@ public class NodeManager : MonoBehaviour {
         return position_offset;
     }
 
-    public void changeComponentIndex(int index) {
+    public void changeComponentIndex(int index)
+    {
         if (index < 0) index = 0;
         if (index > 2) index = 2;
         this.component_index = index;
@@ -136,4 +122,13 @@ public class NodeManager : MonoBehaviour {
 	public void makeACar()
 	{
 	}
+
+    public void destoryAllNodes()
+    {
+        // child 0 is center cube
+        for (int i = transform.childCount - 1; i > 0; --i)
+        {
+            GameObject.Destroy(transform.GetChild(i).gameObject);
+        }
+    }
 }

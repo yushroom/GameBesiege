@@ -29,7 +29,7 @@ public class WheelController : MonoBehaviour {
 	public void ApplyLocalPositionToVisuals(WheelCollider collider)
 	{
 		if (collider.transform.childCount == 0) {
-			return;
+			//return;
 		}
 		
 		//Transform visualWheel = collider.transform.GetChild(0);
@@ -49,8 +49,9 @@ public class WheelController : MonoBehaviour {
 	public void FixedUpdate()
 	{
 		float motor = maxMotorTorque * Input.GetAxis("Vertical");
+        //Debug.Log(motor);
 		if (isMotorWheel) {
-			wheelCollider.motorTorque = rotationDirection == RotationDirection.clockwise ? motor : motor * -1;
+			wheelCollider.motorTorque = (rotationDirection == RotationDirection.clockwise) ? motor : motor * -1;
 		}
 		ApplyLocalPositionToVisuals(wheelCollider);
 	}
