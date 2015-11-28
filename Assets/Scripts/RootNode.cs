@@ -28,7 +28,7 @@ public class RootNode : Node {
 
     public void toBottom()
     {
-        const float offset = 0.1f;
+        const float offset = 0.2f;
         Vector3 pos = this.transform.position;
         pos.y -= pos.y + bound.center.y - bound.extents.y - offset;
         this.transform.position = pos;

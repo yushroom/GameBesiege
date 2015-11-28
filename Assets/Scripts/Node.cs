@@ -12,7 +12,18 @@ public class Node : MonoBehaviour
 {
 
     //public Node[] neaby_node = new Node[6];
-    public float offset;
+	//[HideInInspector]
+//    float _offset = -1.0f;
+//	public float offset {
+//		get {
+//			if (_offset < 0) {
+//				Vector3 p = anchorSlot.transform.position;
+//				_offset = Mathf.Max(p.x, Mathf.Max(p.y, p.z));
+//			}
+//			return _offset;
+//		}
+//	}
+	public float offset;
     public Bounds bound;
 	bool _hasboundInWorldSpace = false;
 	Bounds _boundInWorldSpace;
@@ -32,6 +43,15 @@ public class Node : MonoBehaviour
     public Slot[] slots;
     public Slot anchorSlot;
 
+	Rigidbody _rigidbody = null;
+	public Rigidbody rigidbody {
+		get {
+			if (_rigidbody == null)
+				_rigidbody = GetComponent<Rigidbody>();
+			return _rigidbody;
+		}
+	}
+
     // Use this for initialization
     void Start()
     {
@@ -43,6 +63,10 @@ public class Node : MonoBehaviour
 
     }
 
+	public virtual void initialize() {
+
+	}
+
     void OnDrawGizmos()
     {
 		// draw node center
@@ -51,7 +75,10 @@ public class Node : MonoBehaviour
 
 		// draw bounding box
 		Gizmos.color = Color.yellow;
-		Gizmos.DrawWireCube (this.transform.position + boundInWorldSpace.center - this.transform.localPosition, boundInWorldSpace.size);
+		if (_hasboundInWorldSpace)
+			Gizmos.DrawWireCube (this.transform.position + boundInWorldSpace.center - this.transform.localPosition, boundInWorldSpace.size);
+		else
+			Gizmos.DrawWireCube (this.transform.position + bound.center, bound.size);
     }
 
     public virtual Slot getNearestSlot(Vector3 point)

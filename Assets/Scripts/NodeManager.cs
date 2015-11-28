@@ -16,57 +16,98 @@ public class NodeManager : MonoBehaviour {
 	
 	}
 
+	public void startGame() {
+		build_mode = false;
+		var nodes = GetComponentsInChildren<Node> ();
+		foreach (Node node in nodes) {
+			Rigidbody rg = node.GetComponent<Rigidbody>();
+			if (rg != null) {
+				rg.useGravity = true;
+			}
+		}
+	}
+
     static Vector3[] _direction = { new Vector3(1, 0, 0), new Vector3(-1, 0, 0), new Vector3(0, 1, 0), 
                                   new Vector3(0, -1, 0), new Vector3(0, 0, 1), new Vector3(0, 0, -1)};
 
 	// Update is called once per frame
-	void Update () {
+	void Update () 
+	{
         RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-	    if (build_mode && Physics.Raycast(ray, out hit)) {
-            GameObject go = hit.transform.gameObject;
-            Node node = go.GetComponent<Node>();
-            var one_node = one_nodes[component_index];
-			one_node.gameObject.SetActive(false);
-            if (node == null || go.tag == "OneNode")
-            {
-                //Debug.Log("not a node");
-                one_node.gameObject.SetActive(false);
-                return;
-            }
-
-            Slot slot = node.getNearestSlot(hit.point);
-			if (slot == null)
-				return;
-            Vector3 slotMainDirection = go.transform.rotation * _direction[(int)slot.direction];
-
-            one_node.transform.position = slot.transform.position + slotMainDirection.normalized * one_node.offset;
-            one_node.transform.rotation = Quaternion.FromToRotation(one_node.anchorSlot.transform.localPosition,
-                                                                    slot.transform.position - one_node.transform.position);
-			Bounds expectedBound = one_node.boundInWorldSpace;
-			//Debug.Log("min " + expectedBound.min);
-			//Debug.Log("max " + expectedBound.max);
-			if (!(bigCubeBounds.Contains(expectedBound.min) && bigCubeBounds.Contains(expectedBound.max))) {
-				return;
-			}
-			one_node.gameObject.SetActive(true);
-
-            if (Input.GetMouseButtonDown(0))
-            {
-                one_node.gameObject.SetActive(false);
-                Node new_node = Instantiate(prefabs[component_index]) as Node;
-                new_node.transform.position = one_node.transform.position;
-                new_node.transform.rotation = one_node.transform.rotation;
-                new_node.anchorSlot.otherNode = node;
-                slot.otherNode = new_node;
-                one_node.gameObject.SetActive(false);
-                one_node.transform.rotation = Quaternion.identity;
-                new_node.transform.parent = root.transform;
-				new_node.boundInWorldSpace = expectedBound;
-                root.combineBound(new_node);
-            }
+	    if (build_mode && Physics.Raycast(ray, out hit)) 
+		{
+			makeNodeFromHit(hit);
         }
 	}
+
+	void makeNodeFromHit(RaycastHit hit)
+	{
+		GameObject go 	= hit.transform.gameObject;
+		Node node 		= go.GetComponent<Node>();
+		Node one_node 	= one_nodes[component_index];
+		one_node.gameObject.SetActive(false);
+		if (node == null || go.tag == "OneNode")
+		{
+			//Debug.Log("not a node");
+			one_node.gameObject.SetActive(false);
+			return;
+		}
+		
+		Slot slot = node.getNearestSlot(hit.point);
+		if (slot == null)
+			return;
+		Vector3 slotMainDirection = go.transform.rotation * _direction[(int)slot.direction];
+		one_node.transform.position = slot.transform.position + slotMainDirection.normalized * one_node.offset;
+		one_node.transform.rotation = 
+			Quaternion.FromToRotation(one_node.anchorSlot.transform.localPosition, slot.transform.position - one_node.transform.position);
+		Bounds expectedBound = one_node.boundInWorldSpace;
+		//Debug.Log("min " + expectedBound.min);
+		//Debug.Log("max " + expectedBound.max);
+		if (!(bigCubeBounds.Contains(expectedBound.min) && bigCubeBounds.Contains(expectedBound.max))) {
+			return;
+		}
+		one_node.gameObject.SetActive(true);
+		
+		if (Input.GetMouseButtonDown(0))
+		{
+			one_node.gameObject.SetActive(false);
+			Node new_node = Instantiate(prefabs[component_index], one_node.transform.position, one_node.transform.rotation) as Node;
+			new_node.initialize();
+			new_node.anchorSlot.otherNode = node;
+			
+			// setup joint
+			FixedJoint joint1 = node.gameObject.AddComponent<FixedJoint>();
+			//FixedJoint joint2 = new_node.gameObject.AddComponent<FixedJoint>();
+			joint1.connectedBody = new_node.rigidbody;
+			//joint2.connectedBody = node.rigibody;
+			
+			slot.otherNode = new_node;
+			one_node.gameObject.SetActive(false);
+			one_node.transform.rotation = Quaternion.identity;
+			new_node.transform.parent = root.transform;
+			new_node.boundInWorldSpace = expectedBound;
+			root.combineBound(new_node);
+		}
+	}
+
+//	void makeOneNodeVisiableFromHitPosition(Vector3 hitPosition) {
+//		Slot slot = node.getNearestSlot(hit.point);
+//		if (slot == null)
+//			return;
+//		Vector3 slotMainDirection = go.transform.rotation * _direction[(int)slot.direction];
+//		
+//		one_node.transform.position = slot.transform.position + slotMainDirection.normalized * one_node.offset;
+//		one_node.transform.rotation = Quaternion.FromToRotation(one_node.anchorSlot.transform.localPosition,
+//		                                                        slot.transform.position - one_node.transform.position);
+//		Bounds expectedBound = one_node.boundInWorldSpace;
+//		//Debug.Log("min " + expectedBound.min);
+//		//Debug.Log("max " + expectedBound.max);
+//		if (!(bigCubeBounds.Contains(expectedBound.min) && bigCubeBounds.Contains(expectedBound.max))) {
+//			return;
+//		}
+//		one_node.gameObject.SetActive(true);
+//	}
 
     Vector3 mainDirection(Vector3 dir) {
         Vector3 position_offset = Vector3.zero;
@@ -91,4 +132,8 @@ public class NodeManager : MonoBehaviour {
         if (index > 2) index = 2;
         this.component_index = index;
     }
+
+	public void makeACar()
+	{
+	}
 }
