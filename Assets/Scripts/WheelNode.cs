@@ -10,9 +10,9 @@ public class WheelNode : Node {
 	public override void initialize() {
 		Debug.Log ("WheelNode.initialize()");
 		base.initialize ();
-		if (transform.position.x < 0)
+		if (transform.position.z < 0)
 			clockWise = false;
-		Debug.Log ("here");
+		//Debug.Log ("here");
 		WheelController controller = GetComponent<WheelController> ();
 		controller.rotationDirection = clockWise ? RotationDirection.clockwise : RotationDirection.anti_clockwise;
 	}

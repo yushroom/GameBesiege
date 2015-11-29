@@ -16,6 +16,10 @@ public class NodeManager : MonoBehaviour {
         Time.timeScale = 0;
 	}
 
+	public void setBuildMode(bool enabled) {
+		build_mode = enabled;
+	}
+
 	public void startGame()
     {
         Time.timeScale = 1;
@@ -27,6 +31,13 @@ public class NodeManager : MonoBehaviour {
 		//		rg.useGravity = true;
 		//	}
 		//}
+	}
+
+	public void pauseGame() {
+		Time.timeScale = 0;
+	}
+	public void resumeGame() {
+		Time.timeScale = 1;
 	}
 
     static Vector3[] _direction = { new Vector3(1, 0, 0), new Vector3(-1, 0, 0), new Vector3(0, 1, 0), 
@@ -114,9 +125,8 @@ public class NodeManager : MonoBehaviour {
 
     public void changeComponentIndex(int index)
     {
-        if (index < 0) index = 0;
-        if (index > 2) index = 2;
-        this.component_index = index;
+		Debug.Log (index);
+		this.component_index = Mathf.Clamp (index, 0, prefabs.Length);
     }
 
 	public void makeACar()

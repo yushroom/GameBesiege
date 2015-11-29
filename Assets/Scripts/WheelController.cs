@@ -48,10 +48,11 @@ public class WheelController : MonoBehaviour {
 	
 	public void FixedUpdate()
 	{
-		float motor = maxMotorTorque * Input.GetAxis("Vertical");
+		float motor = - maxMotorTorque * Input.GetAxis("Vertical");
         //Debug.Log(motor);
 		if (isMotorWheel) {
 			wheelCollider.motorTorque = (rotationDirection == RotationDirection.clockwise) ? motor : motor * -1;
+			//wheelCollider.motorTorque = motor;
 		}
 		ApplyLocalPositionToVisuals(wheelCollider);
 	}
