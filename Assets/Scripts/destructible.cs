@@ -16,7 +16,7 @@ public class destructible : MonoBehaviour {
 	}
 
 	void OnCollisionEnter (Collision col) {
-		Debug.Log (col.impulse);
+		//Debug.Log (col.impulse);
 		if (col.impulse.magnitude > 1000) {
 			explorer.explorer();
 		}

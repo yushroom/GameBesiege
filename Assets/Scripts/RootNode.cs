@@ -7,7 +7,6 @@ public class RootNode : Node {
 	void Start () {
         bound.center = Vector3.zero;
         bound.size = Vector3.one;
-        Debug.Log("Start");
 	}
 	
 	// Update is called once per frame

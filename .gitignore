@@ -2,7 +2,11 @@ Library/
 Temp/
 obj/
 Assets/Unpack2/
+Assets/Unpack3/
+Assets/Textures/Icon/DDS
 *.sln
 *.userprefs
 *.csproj
-/*.suo
+*.suo
+.vs/
+

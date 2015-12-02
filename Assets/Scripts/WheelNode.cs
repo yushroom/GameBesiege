@@ -8,7 +8,7 @@ public class WheelNode : Node {
 	public bool clockWise = true;
 
 	public override void initialize() {
-		Debug.Log ("WheelNode.initialize()");
+		//Debug.Log ("WheelNode.initialize()");
 		base.initialize ();
 		if (transform.position.z < 0)
 			clockWise = false;

@@ -4,6 +4,7 @@ using System.Collections;
 public class NodeManager : MonoBehaviour {
 
     public bool build_mode = true;
+    public bool erase_mode = false;
     public Node root;
 	public Bounds bigCubeBounds;
     public Node[] one_nodes;
@@ -33,7 +34,25 @@ public class NodeManager : MonoBehaviour {
 		//}
 	}
 
-	public void pauseGame() {
+    // todo
+    public void reset()
+    {
+        build_mode = true;
+        GetComponent<PositionReset>().reset();
+        Time.timeScale = 0;
+        var nodes = GetComponentsInChildren<Node>();
+        foreach (Node node in nodes)
+        {
+            //Rigidbody rg = node.GetComponent<Rigidbody>();
+            //if (rg != null)
+            //{
+            //    rg.useGravity = true;
+            //}
+            node.gameObject.GetComponent<PositionReset>().reset();
+        }
+    }
+
+    public void pauseGame() {
 		Time.timeScale = 0;
 	}
 	public void resumeGame() {
@@ -125,7 +144,7 @@ public class NodeManager : MonoBehaviour {
 
     public void changeComponentIndex(int index)
     {
-		Debug.Log (index);
+		//Debug.Log (index);
 		this.component_index = Mathf.Clamp (index, 0, prefabs.Length);
     }
 
