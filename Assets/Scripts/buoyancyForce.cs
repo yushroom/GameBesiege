@@ -6,7 +6,7 @@ using System.Collections;
 public class buoyancyForce : MonoBehaviour {
 
 	ConstantForce _force;
-	public Vector3 maxForce;
+	public float maxForce;
 	public KeyCode key;
 	public UnityEvent onKeyDown;
 
@@ -20,7 +20,8 @@ public class buoyancyForce : MonoBehaviour {
 	void Update () {
 		if (Input.GetKey (key)) {
 			//Debug.Log ("holding " + key);
-			_force.force = new Vector3(transform.up.x * maxForce.x, transform.up.y * maxForce.y, transform.up.z * maxForce.z);
+			_force.force = transform.up * maxForce;
+			//Debug.Log(_force.force);
 			onKeyDown.Invoke();
 		} else {
 			//Debug.Log("release " + key);

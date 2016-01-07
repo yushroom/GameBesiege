@@ -1,8 +1,11 @@
 Library/
 Temp/
 obj/
+Release/
 Assets/Unpack2/
+Assets/Unpack2.meta
 Assets/Unpack3/
+Assets/Unpack3.meta
 Assets/Textures/Icon/DDS
 *.sln
 *.userprefs
