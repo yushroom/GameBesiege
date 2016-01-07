@@ -13,3 +13,5 @@ Assets/Textures/Icon/DDS
 *.suo
 .vs/
 
+/Assets/Textures/dds
+/Assets/Textures/dds.meta
