@@ -21,7 +21,7 @@ public class Rotator : MonoBehaviour {
 	}
 
 	void OnDrawGizmos() {
-		Gizmos.DrawLine (transform.position, transform.position + transform.parent.up);
+		//Gizmos.DrawLine (transform.position, transform.position + transform.parent.up);
 	}
 
 	public void rotate() {

@@ -171,4 +171,9 @@ public class Node : MonoBehaviour
 		_boundInWorldSpace.center = transform.localPosition;
 		//Debug.Log(bound_r);
 	}
+
+	public void clearSlots() {
+		foreach (var slot in slots) {
+		}
+	}
 }

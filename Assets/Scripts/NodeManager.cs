@@ -21,6 +21,10 @@ public class NodeManager : MonoBehaviour {
 		build_mode = enabled;
 	}
 
+	public void setEraseMode() {
+		erase_mode = !erase_mode;
+	}
+
 	public void startGame()
     {
         Time.timeScale = 1;
@@ -69,8 +73,24 @@ public class NodeManager : MonoBehaviour {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 	    if (build_mode && Physics.Raycast(ray, out hit)) 
 		{
-			makeNodeFromHit(hit);
+			if (erase_mode)
+				eraseNodeFromHit(hit);
+			else
+				makeNodeFromHit(hit);
         }
+	}
+
+	void eraseNodeFromHit(RaycastHit hit)
+	{
+		if (Input.GetMouseButtonDown (0)) {
+			//makeNodeFromHit (hit);
+			GameObject go = hit.transform.gameObject;
+			Node node = go.GetComponent<Node> ();
+			if (node == null || go.tag == "OneNode" || go.tag == "CenterNode") {
+				return;
+			}
+			GameObject.Destroy (go);
+		}
 	}
 
 	void makeNodeFromHit(RaycastHit hit)
